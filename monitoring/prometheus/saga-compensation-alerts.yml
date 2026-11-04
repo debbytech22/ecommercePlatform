@@ -1,0 +1,29 @@
+groups:
+  - name: order-saga-compensation
+    rules:
+      - alert: SagaCompensationExceedsSla
+        expr: saga_compensation_oldest_age_seconds > 60
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: An order compensation exceeded its expected completion time
+          description: The oldest unresolved compensation has been active for {{ $value }} seconds.
+
+      - alert: SagaCompensationRequiresManualIntervention
+        expr: saga_compensation_manual_interventions > 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: An order compensation requires manual intervention
+          description: Inspect the Saga operations endpoint for the affected order and compensation step.
+
+      - alert: SagaCompensationStepsStalled
+        expr: saga_compensation_pending_steps > 0
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: Compensation steps remain pending
+          description: Compensation work has remained pending beyond the retry and provider response window.

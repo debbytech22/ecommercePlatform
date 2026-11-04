@@ -1,0 +1,20 @@
+groups:
+  - name: payment-compensation
+    rules:
+      - alert: PaymentProviderOperationsUnresolved
+        expr: payment_unresolved_provider_operations > 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: Payment provider operations have unresolved outcomes
+          description: Reconcile provider operations before retrying or completing the related compensation.
+
+      - alert: PaymentCompensationManualIntervention
+        expr: payment_compensation_operations{status="MANUAL_INTERVENTION_REQUIRED"} > 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: Payment compensation requires manual intervention
+          description: Inspect the payment operation and its provider reconciliation history.

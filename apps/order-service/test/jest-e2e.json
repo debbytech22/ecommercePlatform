@@ -1,0 +1,23 @@
+{
+  "moduleFileExtensions": ["mjs", "js", "json", "ts"],
+  "extensionsToTreatAsEsm": [".ts"],
+  "rootDir": "../../..",
+  "testEnvironment": "node",
+  "testRegex": "apps/order-service/test/.*\\.e2e-spec\\.ts$",
+  "transform": {
+    "^.+\\.ts$": [
+      "ts-jest",
+      {
+        "useESM": true,
+        "tsconfig": {
+          "module": "ESNext",
+          "moduleResolution": "Bundler"
+        }
+      }
+    ]
+  },
+  "moduleNameMapper": {
+    "^default/contracts$": "<rootDir>/libs/contracts/src/index.ts",
+    "^default/contracts/(.*)$": "<rootDir>/libs/contracts/src/$1"
+  }
+}

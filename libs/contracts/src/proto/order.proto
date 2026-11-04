@@ -1,0 +1,144 @@
+
+syntax = "proto3";
+
+package ecommerce.orders.v1;
+
+service OrderService {
+  // Creates an order. The implementation will enforce idempotency and
+  // calculate prices using trusted server-side pricing data.
+  rpc CreateOrder (CreateOrderRequest) returns (CreateOrderResponse);
+
+  // Retrieves a persisted order and its items by order ID.
+  // Ownership is enforced: customer_id must match the order's owner.
+  rpc GetOrder (GetOrderRequest) returns (GetOrderResponse);
+
+  // Retrieves a paginated list of orders for the authenticated customer.
+  rpc GetCustomerOrders (GetCustomerOrdersRequest) returns (GetCustomerOrdersResponse);
+
+  // Retrieves the current status of a single order.
+  rpc GetOrderStatus (GetOrderStatusRequest) returns (GetOrderStatusResponse);
+
+  // Retrieves the full lifecycle history of a single order.
+  rpc GetOrderTimeline (GetOrderTimelineRequest) returns (GetOrderTimelineResponse);
+}
+
+// ── Shared sub-messages ───────────────────────────────────────────────────────
+
+// A product and quantity requested by the customer.
+message OrderItem {
+  string product_id = 1;
+  int32 quantity = 2;
+}
+
+// A persisted order line, including the price snapshot recorded at purchase.
+message OrderLineItem {
+  string product_id = 1;
+  string product_name = 2;
+  int32 quantity = 3;
+  string unit_price = 4;
+  string line_total = 5;
+}
+
+// Pagination metadata returned alongside list responses.
+message PaginationMeta {
+  int32 page = 1;
+  int32 limit = 2;
+  int32 total = 3;
+  bool has_next_page = 4;
+}
+
+// A single entry in the order lifecycle timeline.
+message OrderTimelineEntry {
+  string from_status = 1;
+  string to_status = 2;
+  string occurred_at = 3;
+  string reason = 4;
+  string reason_code = 5;
+}
+
+// ── CreateOrder ───────────────────────────────────────────────────────────────
+
+// Input for creating an order. Clients must not supply authoritative prices.
+message CreateOrderRequest {
+  string customer_id = 1;
+  repeated OrderItem items = 2;
+  string idempotency_key = 3;
+}
+
+// Initial response for an order creation request.
+message CreateOrderResponse {
+  string order_id = 1;
+  string status = 2;
+}
+
+// ── GetOrder ──────────────────────────────────────────────────────────────────
+
+// Identifies the order to retrieve. customer_id enforces ownership.
+message GetOrderRequest {
+  string order_id = 1;
+  string customer_id = 2;
+}
+
+// The persisted order returned by the service.
+message GetOrderResponse {
+  string order_id = 1;
+  string customer_id = 2;
+  string status = 3;
+  string currency = 4;
+  string subtotal_amount = 5;
+  string total_amount = 6;
+  repeated OrderLineItem items = 7;
+  string created_at = 8;
+  string updated_at = 9;
+}
+
+// ── GetCustomerOrders ─────────────────────────────────────────────────────────
+
+message GetCustomerOrdersRequest {
+  string customer_id = 1;
+  int32 page = 2;
+  int32 limit = 3;
+  // Optional: filter by order status. Empty string means no filter.
+  string status = 4;
+}
+
+message OrderSummary {
+  string order_id = 1;
+  string status = 2;
+  string currency = 3;
+  string total_amount = 4;
+  int32 item_count = 5;
+  string created_at = 6;
+  string updated_at = 7;
+}
+
+message GetCustomerOrdersResponse {
+  repeated OrderSummary orders = 1;
+  PaginationMeta pagination = 2;
+}
+
+// ── GetOrderStatus ────────────────────────────────────────────────────────────
+
+message GetOrderStatusRequest {
+  string order_id = 1;
+  string customer_id = 2;
+}
+
+message GetOrderStatusResponse {
+  string order_id = 1;
+  string status = 2;
+  string updated_at = 3;
+}
+
+// ── GetOrderTimeline ──────────────────────────────────────────────────────────
+
+message GetOrderTimelineRequest {
+  string order_id = 1;
+  string customer_id = 2;
+}
+
+message GetOrderTimelineResponse {
+  string order_id = 1;
+  string current_status = 2;
+  repeated OrderTimelineEntry entries = 3;
+}

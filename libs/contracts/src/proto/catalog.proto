@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package ecommerce.catalog.v1;
+
+service CatalogService {
+  rpc GetPrices (GetPricesRequest) returns (GetPricesResponse);
+}
+
+message GetPricesRequest {
+  repeated string product_ids = 1;
+}
+
+message ProductPrice {
+  string product_id = 1;
+  string product_name = 2;
+  string unit_price = 3;
+  string currency = 4;
+  bool active = 5;
+}
+
+message GetPricesResponse {
+  repeated ProductPrice items = 1;
+}

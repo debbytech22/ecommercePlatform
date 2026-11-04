@@ -1,0 +1,71 @@
+groups:
+  - name: inventory-service
+    rules:
+      - alert: InventoryRabbitMqDisconnected
+        expr: inventory_rabbitmq_connected == 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: Inventory Service is disconnected from RabbitMQ
+          description: The {{ $labels.component }} connection has been unavailable for more than two minutes.
+
+      - alert: InventoryOutboxBacklogGrowing
+        expr: inventory_outbox_pending_events > 100 or inventory_outbox_oldest_pending_event_age_seconds > 300
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: Inventory outbox events are not being published promptly
+          description: Pending count or oldest event age exceeded the operational threshold.
+
+      - alert: InventoryOutboxEventsFailed
+        expr: inventory_outbox_failed_events > 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: Inventory outbox events require manual intervention
+          description: At least one event exhausted automatic publishing attempts.
+
+      - alert: InventoryReservationsStuck
+        expr: inventory_stuck_reservations > 0
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: Inventory reservations are holding stock beyond the configured age
+          description: Review aged RESERVED reservations and downstream Saga progress.
+
+      - alert: InventoryConsumerFailuresElevated
+        expr: sum(rate(inventory_consumer_events_total{outcome="failed"}[5m])) > 0.1
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: Inventory event consumer failures are elevated
+          description: Consumer failures have exceeded 0.1 events per second over five minutes.
+
+      - alert: InventoryConsumerDeadLetters
+        expr: increase(inventory_consumer_events_total{outcome="dead_lettered"}[5m]) > 0
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: Inventory messages were sent to the dead-letter queue
+          description: Inspect the durable inventory DLQ and remediate or replay affected messages.
+
+      - alert: InventoryReservationFailureRatioHigh
+        expr: |
+          (increase(inventory_reservations_failed_total[15m]) /
+          clamp_min(increase(inventory_reservations_failed_total[15m]) +
+          increase(inventory_reservations_succeeded_total[15m]), 1)) > 0.2
+          and
+          (increase(inventory_reservations_failed_total[15m]) +
+          increase(inventory_reservations_succeeded_total[15m])) >= 10
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: Inventory reservation business failure ratio is high
+          description: More than 20 percent of recent reservation outcomes failed.
