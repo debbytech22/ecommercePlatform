@@ -1,10 +1,10 @@
 import { Metadata, status } from '@grpc/grpc-js';
-import type { CallOptions } from '@grpc/grpc-js';
+import  { CallOptions } from '@grpc/grpc-js';
 import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { RpcException } from '@nestjs/microservices';
 import type { ClientGrpc } from '@nestjs/microservices';
-import type { GetPricesRequest, GetPricesResponse } from 'default/contracts';
+import  { GetPricesRequest, GetPricesResponse } from 'default/contracts';
 import { firstValueFrom, Observable, timeout } from 'rxjs';
 
 import type { ProductPrice, ProductPricingPort } from './product-pricing.port';
