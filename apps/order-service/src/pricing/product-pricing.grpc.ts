@@ -27,6 +27,7 @@ export class ProductPricingGrpcClient
 {
   private catalog!: CatalogGrpcClient;
 
+  
   constructor(
     @Inject(CATALOG_GRPC_CLIENT)
     private readonly client: ClientGrpc,
