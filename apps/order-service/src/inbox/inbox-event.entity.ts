@@ -15,14 +15,13 @@ export class InboxEventEntity {
   @Column({  type: 'varchar', length: 120 })
   eventType!: string;
 
-  @Column({ name: 'aggregate_id', type: 'char', length: 36 })
+  @Column({  type: 'char', length: 36 })
   aggregateId!: string;
 
-  @Column({ name: 'correlation_id', type: 'char', length: 36 })
+  @Column({  type: 'char', length: 36 })
   correlationId!: string;
 
   @Column({
-    name: 'processing_status',
     type: 'varchar',
     length: 20,
     default: 'RECEIVED',
@@ -30,14 +29,12 @@ export class InboxEventEntity {
   processingStatus!: 'RECEIVED' | 'PROCESSED';
 
   @CreateDateColumn({
-    name: 'received_at',
     type: 'datetime',
     precision: 6,
   })
   receivedAt!: Date;
 
   @Column({
-    name: 'processed_at',
     type: 'datetime',
     precision: 6,
     nullable: true,
