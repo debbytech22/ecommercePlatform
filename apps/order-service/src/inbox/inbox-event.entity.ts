@@ -9,34 +9,28 @@ import {
 @Entity({ name: 'order_inbox_events' })
 @Index('idx_order_inbox_processed_at', ['processedAt'])
 export class InboxEventEntity {
-  @PrimaryColumn({ type: 'char', length: 36 })
+  @PrimaryColumn()
   eventId!: string;
 
-  @Column({  type: 'varchar', length: 120 })
+  @Column()
   eventType!: string;
 
-  @Column({  type: 'char', length: 36 })
+  @Column()
   aggregateId!: string;
 
-  @Column({  type: 'char', length: 36 })
+  @Column()
   correlationId!: string;
 
   @Column({
-    type: 'varchar',
-    length: 20,
     default: 'RECEIVED',
   })
   processingStatus!: 'RECEIVED' | 'PROCESSED';
 
-  @CreateDateColumn({
-    type: 'datetime',
-    precision: 6,
-  })
+  @CreateDateColumn()
   receivedAt!: Date;
 
   @Column({
     type: 'datetime',
-    precision: 6,
     nullable: true,
   })
   processedAt!: Date | null;
