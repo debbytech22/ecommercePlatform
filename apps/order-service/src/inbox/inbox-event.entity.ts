@@ -9,10 +9,10 @@ import {
 @Entity({ name: 'order_inbox_events' })
 @Index('idx_order_inbox_processed_at', ['processedAt'])
 export class InboxEventEntity {
-  @PrimaryColumn({ name: 'event_id', type: 'char', length: 36 })
+  @PrimaryColumn({ type: 'char', length: 36 })
   eventId!: string;
 
-  @Column({ name: 'event_type', type: 'varchar', length: 120 })
+  @Column({  type: 'varchar', length: 120 })
   eventType!: string;
 
   @Column({ name: 'aggregate_id', type: 'char', length: 36 })
