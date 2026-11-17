@@ -51,14 +51,14 @@ export class OrderEntity {
    * Identifier of the customer who owns this order.
    * The service must derive or validate this identity through trusted auth.
    */
-  @Column({ name: 'customer_id', type: 'varchar', length: 64 })
+  @Column({ type: 'varchar', length: 64 })
   customerId!: string;
 
   /**
    * Client-provided idempotency key, scoped to a customer by a unique index.
    * Repeated requests with the same key must be handled by application logic.
    */
-  @Column({ name: 'idempotency_key', type: 'varchar', length: 128 })
+  @Column({ type: 'varchar', length: 128 })
   idempotencyKey!: string;
 
   /**
@@ -83,7 +83,6 @@ export class OrderEntity {
    * DECIMAL values are represented as strings to avoid floating-point errors.
    */
   @Column({
-    name: 'subtotal_amount',
     type: 'decimal',
     precision: 19,
     scale: 4,
@@ -94,7 +93,6 @@ export class OrderEntity {
    * Final amount due, calculated by trusted server-side pricing logic.
    */
   @Column({
-    name: 'total_amount',
     type: 'decimal',
     precision: 19,
     scale: 4,
@@ -104,21 +102,13 @@ export class OrderEntity {
   /**
    * Creation time assigned by the database.
    */
-  @CreateDateColumn({
-    name: 'created_at',
-    type: 'datetime',
-    precision: 6,
-  })
+  @CreateDateColumn()
   createdAt!: Date;
 
   /**
    * Last-update time maintained by TypeORM when the record is saved.
    */
-  @UpdateDateColumn({
-    name: 'updated_at',
-    type: 'datetime',
-    precision: 6,
-  })
+  @UpdateDateColumn()
   updatedAt!: Date;
 
   /**
@@ -128,12 +118,7 @@ export class OrderEntity {
   @VersionColumn({ type: 'int', unsigned: true })
   version!: number;
 
-  @Column({
-    name: 'request_hash',
-    type: 'char',
-    length: 64,
-    nullable: true,
-  })
+  @Column()
   requestHash!: string | null;
 
   /**

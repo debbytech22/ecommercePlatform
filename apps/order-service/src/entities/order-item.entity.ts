@@ -23,7 +23,7 @@ export class OrderItemEntity {
   /**
    * Application-generated UUID identifying this order line.
    */
-  @PrimaryColumn({ type: 'char', length: 36 })
+  @PrimaryColumn()
   id!: string;
 
   /**
