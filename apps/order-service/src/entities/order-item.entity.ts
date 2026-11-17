@@ -29,13 +29,13 @@ export class OrderItemEntity {
   /**
    * Product identifier from the trusted catalog or product service.
    */
-  @Column({ name: 'product_id', type: 'varchar', length: 64 })
+  @Column()
   productId!: string;
 
   /**
    * Product name captured when the order is created.
    */
-  @Column({ name: 'product_name', type: 'varchar', length: 255 })
+  @Column()
   productName!: string;
 
   /**
@@ -49,7 +49,6 @@ export class OrderItemEntity {
    * Trusted unit price at the time the order was created.
    */
   @Column({
-    name: 'unit_price',
     type: 'decimal',
     precision: 19,
     scale: 4,
@@ -60,7 +59,6 @@ export class OrderItemEntity {
    * Quantity multiplied by unit price, calculated by server-side logic.
    */
   @Column({
-    name: 'line_total',
     type: 'decimal',
     precision: 19,
     scale: 4,
