@@ -34,7 +34,7 @@ export enum OrderStatus {
  * must be calculated from trusted server-side pricing data, never accepted
  * as authoritative values from the client.
  */
-@Entity({ name: 'orders' })
+@Entity()
 @Index('uq_orders_customer_idempotency', ['customerId', 'idempotencyKey'], {
   unique: true,
 })
@@ -51,31 +51,27 @@ export class OrderEntity {
    * Identifier of the customer who owns this order.
    * The service must derive or validate this identity through trusted auth.
    */
-  @Column({ type: 'varchar', length: 64 })
+  @Column()
   customerId!: string;
 
   /**
    * Client-provided idempotency key, scoped to a customer by a unique index.
    * Repeated requests with the same key must be handled by application logic.
    */
-  @Column({ type: 'varchar', length: 128 })
+  @Column()
   idempotencyKey!: string;
 
   /**
    * Persisted workflow state used by the order Saga and recovery process.
    */
-  @Column({
-    type: 'varchar',
-    length: 40,
-    default: OrderStatus.PENDING,
-  })
+  @Column({default: OrderStatus.PENDING,})
   status!: OrderStatus;
 
   /**
    * ISO 4217 currency code, such as NGN or USD.
    * The service must validate supported currencies before creating orders.
    */
-  @Column({ type: 'char', length: 3 })
+  @Column()
   currency!: string;
 
   /**
