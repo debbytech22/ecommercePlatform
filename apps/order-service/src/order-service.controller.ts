@@ -32,11 +32,13 @@ export class OrderGrpcController {
     );
   }
 
+
   @GrpcMethod('OrderService', 'GetOrder')
   getOrder(
     request: GetOrderRequest,
     metadata: Metadata,
   ): Promise<GetOrderResponse> {
+    
     return this.orderService.getOrder(
       request,
       this.requireCustomerId(metadata),
