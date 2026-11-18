@@ -19,16 +19,16 @@ export class OutboxEventEntity {
   @PrimaryColumn({ type: 'char', length: 36 })
   id!: string;
 
-  @Column({  length: 80 })
+  @Column()
   aggregateType!: string;
 
-  @Column({   length: 36 })
+  @Column()
   aggregateId!: string;
 
-  @Column({  length: 120 })
+  @Column()
   eventType!: string;
 
-  @Column({ length: 36, nullable: true })
+  @Column({nullable: true })
   commandId!: string | null;
 
   @Column({ type: 'json' })
