@@ -6,28 +6,20 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity({ name: 'product_inventory' })
+@Entity()
 export class ProductInventoryEntity {
-  @PrimaryColumn({ name: 'product_id', type: 'varchar', length: 120 })
+  @PrimaryColumn()
   productId!: string;
 
-  @Column({ name: 'on_hand', type: 'int', unsigned: true, default: 0 })
+  @Column({ unsigned: true, default: 0 })
   onHand!: number;
 
-  @Column({ name: 'reserved', type: 'int', unsigned: true, default: 0 })
+  @Column({ unsigned: true, default: 0 })
   reserved!: number;
 
-  @CreateDateColumn({
-    name: 'created_at',
-    type: 'datetime',
-    precision: 6,
-  })
+  @CreateDateColumn()
   createdAt!: Date;
 
-  @UpdateDateColumn({
-    name: 'updated_at',
-    type: 'datetime',
-    precision: 6,
-  })
+  @UpdateDateColumn()
   updatedAt!: Date;
 }
