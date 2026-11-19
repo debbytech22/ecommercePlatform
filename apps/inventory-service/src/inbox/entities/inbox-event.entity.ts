@@ -11,33 +11,24 @@ export enum InboxEventStatus {
   PROCESSED = 'PROCESSED',
 }
 
-@Entity({ name: 'inbox_events' })
+@Entity()
 @Index('idx_inbox_event_status_received', ['status', 'receivedAt'])
 export class InboxEventEntity {
-  @PrimaryColumn({ name: 'event_id', type: 'char', length: 36 })
+  @PrimaryColumn()
   eventId!: string;
 
-  @Column({ name: 'event_type', type: 'varchar', length: 120 })
+  @Column()
   eventType!: string;
 
   @Column({
-    type: 'varchar',
-    length: 16,
     default: InboxEventStatus.PROCESSING,
   })
   status!: InboxEventStatus;
 
-  @CreateDateColumn({
-    name: 'received_at',
-    type: 'datetime',
-    precision: 6,
-  })
+  @CreateDateColumn()
   receivedAt!: Date;
 
   @Column({
-    name: 'processed_at',
-    type: 'datetime',
-    precision: 6,
     nullable: true,
   })
   processedAt!: Date | null;
