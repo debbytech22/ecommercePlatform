@@ -6,7 +6,7 @@ import {
   PrimaryColumn,
 } from 'typeorm';
 
-@Entity({ name: 'order_inbox_events' })
+@Entity()
 @Index('idx_order_inbox_processed_at', ['processedAt'])
 export class InboxEventEntity {
   @PrimaryColumn()
