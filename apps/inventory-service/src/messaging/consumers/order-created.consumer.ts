@@ -32,7 +32,7 @@ export class OrderCreatedConsumer {
       const result = await this.inbox.processOnce(
         orderCreatedEvent.eventId,
         orderCreatedEvent.eventType,
-        (manager) => this.reservations.reserveOrder(orderCreatedEvent, manager),
+        (manager) => this.reservations.reserveOrder(orderCreatedEvent!, manager),
       );
       this.metrics.recordConsumerOutcome(result);
       this.logger.log(
