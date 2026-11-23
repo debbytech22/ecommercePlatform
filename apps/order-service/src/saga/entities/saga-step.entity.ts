@@ -28,83 +28,63 @@ export enum SagaStepType {
 @Index('uq_saga_steps_operation_id', ['operationId'], { unique: true })
 @Index('idx_saga_steps_recovery_deadline', ['status', 'deadlineAt'])
 export class SagaStepEntity {
-  @PrimaryColumn({ type: 'char', length: 36 })
+  @PrimaryColumn()
   id!: string;
 
-  @Column({ name: 'saga_id', type: 'char', length: 36 })
+  @Column()
   sagaId!: string;
 
   @ManyToOne(() => OrderSagaEntity, (saga) => saga.steps, {
     nullable: false,
     onDelete: 'RESTRICT',
   })
-  @JoinColumn({ name: 'saga_id', referencedColumnName: 'id' })
+  @JoinColumn()
   saga!: Relation<OrderSagaEntity>;
 
-  @Column({ name: 'step_type', type: 'varchar', length: 40 })
+  @Column()
   stepType!: SagaStepType;
 
-  @Column({ type: 'varchar', length: 40 })
+  @Column()
   status!: SagaStepStatus;
 
-  @Column({ name: 'command_id', type: 'char', length: 36, nullable: true })
+  @Column({nullable: true })
   commandId!: string | null;
 
-  @Column({ name: 'operation_id', type: 'char', length: 36, nullable: true })
+  @Column({ nullable: true })
   operationId!: string | null;
 
-  @Column({ name: 'attempts', type: 'int', unsigned: true, default: 0 })
+  @Column({default: 0 })
   attemptCount!: number;
 
-  @Column({ name: 'last_error', type: 'varchar', length: 1000, nullable: true })
+  @Column({nullable: true })
   lastError!: string | null;
 
-  @Column({ name: 'last_error_code', type: 'varchar', length: 100, nullable: true })
+  @Column({nullable: true })
   lastErrorCode!: string | null;
 
   @Column({
-    name: 'started_at',
-    type: 'datetime',
-    precision: 6,
     nullable: true,
   })
   startedAt!: Date | null;
 
   @Column({
-    name: 'deadline_at',
-    type: 'datetime',
-    precision: 6,
     nullable: true,
   })
   deadlineAt!: Date | null;
 
   @Column({
-    name: 'next_retry_at',
-    type: 'datetime',
-    precision: 6,
     nullable: true,
   })
   nextRetryAt!: Date | null;
 
   @Column({
-    name: 'completed_at',
-    type: 'datetime',
-    precision: 6,
     nullable: true,
   })
   completedAt!: Date | null;
 
-  @CreateDateColumn({
-    name: 'created_at',
-    type: 'datetime',
-    precision: 6,
-  })
+  @CreateDateColumn()
   createdAt!: Date;
 
-  @UpdateDateColumn({
-    name: 'updated_at',
-    type: 'datetime',
-    precision: 6,
-  })
+  @UpdateDateColumn()
   updatedAt!: Date;
 }

@@ -18,18 +18,18 @@ export class SagaRecoveryAttemptEntity {
   @PrimaryColumn({ type: 'char', length: 36 })
   id!: string;
 
-  @Column({ name: 'saga_id', type: 'char', length: 36 })
+  @Column()
   sagaId!: string;
 
-  @Column({ name: 'attempt_number', type: 'int', unsigned: true })
+  @Column()
   attemptNumber!: number;
 
-  @Column({ type: 'varchar', length: 20, default: RecoveryAttemptStatus.ATTEMPTED })
+  @Column({  default: RecoveryAttemptStatus.ATTEMPTED })
   status!: RecoveryAttemptStatus;
 
-  @Column({ name: 'error_message', type: 'varchar', length: 1000, nullable: true })
+  @Column({  nullable: true })
   errorMessage!: string | null;
 
-  @CreateDateColumn({ name: 'created_at', type: 'datetime', precision: 6 })
+  @CreateDateColumn()
   createdAt!: Date;
 }
