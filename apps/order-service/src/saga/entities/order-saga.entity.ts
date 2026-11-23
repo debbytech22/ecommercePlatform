@@ -96,72 +96,44 @@ export class OrderSagaEntity {
   failureCode!: string | null;
 
   @Column({
-    name: 'failure_reason',
-    type: 'varchar',
-    length: 1000,
     nullable: true,
   })
   failureReason!: string | null;
 
   @Column({
-    name: 'compensation_causation_id',
-    type: 'char',
-    length: 36,
     nullable: true,
   })
   compensationCausationId!: string | null;
 
   @Column({
-    name: 'compensation_reason',
-    type: 'varchar',
-    length: 60,
     nullable: true,
   })
   compensationReason!: CompensationReason | null;
 
   @Column({
-    name: 'compensation_status',
-    type: 'varchar',
-    length: 40,
     nullable: true,
   })
   compensationStatus!: CompensationStatus | null;
 
   @Column({
-    name: 'compensation_started_at',
-    type: 'datetime',
-    precision: 6,
     nullable: true,
   })
   compensationStartedAt!: Date | null;
 
   @Column({
-    name: 'compensation_completed_at',
-    type: 'datetime',
-    precision: 6,
     nullable: true,
   })
   compensationCompletedAt!: Date | null;
 
   @Column({
-    name: 'compensation_failure_reason',
-    type: 'varchar',
-    length: 1000,
     nullable: true,
   })
   compensationFailureReason!: string | null;
 
-  @Column({
-    name: 'started_at',
-    type: 'datetime',
-    precision: 6,
-  })
+  @Column()
   startedAt!: Date;
 
   @Column({
-    name: 'completed_at',
-    type: 'datetime',
-    precision: 6,
     nullable: true,
   })
   completedAt!: Date | null;
@@ -169,18 +141,10 @@ export class OrderSagaEntity {
   @VersionColumn({ type: 'int', unsigned: true })
   version!: number;
 
-  @CreateDateColumn({
-    name: 'created_at',
-    type: 'datetime',
-    precision: 6,
-  })
+  @CreateDateColumn()
   createdAt!: Date;
 
-  @UpdateDateColumn({
-    name: 'updated_at',
-    type: 'datetime',
-    precision: 6,
-  })
+  @UpdateDateColumn()
   updatedAt!: Date;
 
   @OneToMany(() => SagaStepEntity, (step) => step.saga)
