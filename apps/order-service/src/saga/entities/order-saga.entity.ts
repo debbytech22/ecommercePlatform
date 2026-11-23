@@ -24,71 +24,55 @@ export interface PersistedReservationItem {
   quantity: number;
 }
 
-@Entity({ name: 'order_sagas' })
+@Entity()
 @Index('uq_order_sagas_order_id', ['orderId'], { unique: true })
 @Index('idx_order_sagas_recovery', ['currentState', 'updatedAt'])
 export class OrderSagaEntity {
-  @PrimaryColumn({ type: 'char', length: 36 })
+  @PrimaryColumn()
   id!: string;
 
-  @Column({ name: 'order_id', type: 'char', length: 36 })
+  @Column()
   orderId!: string;
 
   @OneToOne(() => OrderEntity, { nullable: false, onDelete: 'RESTRICT' })
   @JoinColumn({ name: 'order_id', referencedColumnName: 'id' })
   order!: Relation<OrderEntity>;
 
-  @Column({ name: 'state', type: 'varchar', length: 40 })
+  @Column()
   currentState!: SagaState;
 
-  @Column({ name: 'correlation_id', type: 'char', length: 36 })
+  @Column()
   correlationId!: string;
 
   @Column({
-    name: 'reservation_id',
-    type: 'char',
-    length: 36,
     nullable: true,
   })
   inventoryReservationId!: string | null;
 
   @Column({
-    name: 'inventory_reservation_status',
-    type: 'varchar',
-    length: 20,
     nullable: true,
   })
   inventoryReservationStatus!: 'RESERVED' | 'RELEASED' | null;
 
-  @Column({ name: 'inventory_reservation_items', type: 'json', nullable: true })
+  @Column({ type: 'json', nullable: true })
   inventoryReservationItems!: PersistedReservationItem[] | null;
 
   @Column({
-    name: 'payment_operation_id',
-    type: 'char',
-    length: 36,
     nullable: true,
   })
   paymentOperationId!: string | null;
 
   @Column({
-    name: 'payment_authorization_id',
-    type: 'varchar',
-    length: 128,
     nullable: true,
   })
   paymentAuthorizationId!: string | null;
 
   @Column({
-    name: 'payment_id',
-    type: 'char',
-    length: 36,
     nullable: true,
   })
   paymentId!: string | null;
 
   @Column({
-    name: 'payment_amount',
     type: 'decimal',
     precision: 19,
     scale: 4,
@@ -97,25 +81,16 @@ export class OrderSagaEntity {
   paymentAmount!: string | null;
 
   @Column({
-    name: 'payment_currency',
-    type: 'char',
-    length: 3,
     nullable: true,
   })
   paymentCurrency!: string | null;
 
   @Column({
-    name: 'payment_status',
-    type: 'varchar',
-    length: 20,
     nullable: true,
   })
   paymentStatus!: 'AUTHORIZED' | 'CAPTURED' | null;
 
   @Column({
-    name: 'failure_code',
-    type: 'varchar',
-    length: 100,
     nullable: true,
   })
   failureCode!: string | null;
